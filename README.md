@@ -1,2 +1,2 @@
-# Javascript-understanding-the-wired-parts
+# Javascript - Understanding The Weird Parts
 My Javascript notes
