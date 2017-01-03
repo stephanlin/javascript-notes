@@ -26,7 +26,8 @@ In JavaScript, variables can hold different types of values because it's all fig
 * **Primitive type** <br/>
 A type of data that represents a single value. There are 6 primitive types in JavaScript: undefined, null, boolean, number, string, symbol (used in ES6).
 Both *undefined* and *null* represent lack of existence, but never set a varibale to *undefined*, set it to *null*, leave *undefined* to the engine.
-
+* **First class functions** <br/>
+Everything you can do with other types you can do with functions.
 
 ## The global object
 All JavaScript runtimes have a unique object called the global object. Its properties include built-in objects like Math and String, as well as extra properties provided by the host environment. In browsers, the global object is the window object. In Node.js, it’s just called the “global object”. 
@@ -276,4 +277,106 @@ document.addEventListener('click', clickHandler);
 
 wait();
 console.log('finish execution');
+```
+
+## Functions Are Objects
+In JavaScript, functions are first-class objects, because they can have properties and methods just like any other object. What distinguishes them from other objects is that functions can be called. In brief, they are *Function* objects. We can attach properties and methods to a function since it's a object. A function object has some hidden special properties. Two important ones are: name (optional, can be anonymous) and code ("invocable" ()). 
+
+## By Value vs By Reference
+JavaScript is always pass by value, but when a variable refers to an object (including arrays), the "value" is a reference to the object. Consider the following example:
+```javascript
+// by value (primitives)
+var a = 3;
+var b;
+
+b = a;
+a = 2;
+
+console.log(a); // 2
+console.log(b); // 3
+
+// by reference (all objects (including functions))
+var c;
+c = {'greet': 'hi'};
+d = c;
+
+c.greet = 'hello'; // mutate 
+
+console.log(c); // {'greet': 'hello'}
+console.log(d); // {'greet': 'hello'}
+
+// by reference even as parameters
+function change(obj) {
+    obj.greet = 'Hola'; // mutate
+}
+
+change(c)
+
+console.log(c); // {'greet': 'hola'}
+console.log(d); // {'greet': 'hela'}
+
+// equlas operator sets up new memory space (new address)
+c = {'greet': 'hiii'};
+
+console.log(c); // {'greet': 'hiii'}
+console.log(d); // {'greet': 'hola'}
+```
+
+## Object Function and "this"
+```javascript
+var c = {
+    name: 'c object',
+    log: function() {
+        console.log(this.name); // c object
+        this.name = 'Updated c object';
+        console.log(this.name); // Update c object
+        var setname = function(newname) {
+            this.name = newname;
+        }
+        
+        setname('Updated c object again');
+        console.log(this.name); // update c object
+    }
+}
+
+c.log();
+
+console.log(name); // Updated c object again
+```
+```javascript
+var c = {
+    name: 'c object',
+    log: function() {
+        var self = this;
+        console.log(self.name); // c object
+        self.name = 'Updated c object';
+        console.log(self.name); // Update c object
+        var setname = function(newname) {
+            self.name = newname;
+        }
+        
+        setname('Updated c object again');
+        console.log(self.name); // Updated c object again
+    }
+}
+
+c.log();
+```
+
+## Arguments
+```javascript
+function func(firstname, lastname, language = 'en') {
+    console.log(arguments);
+}
+
+func('John', 'Lin', 'zh'); // ['John', 'Lin', 'zh']
+```
+
+## Spread
+```javascript
+function func(firstname, lastname, language = 'en', ...other) {
+    console.log(other)
+}
+
+func('John', 'Lin', 'zh', '1', 2); // ['1', 2]
 ```
