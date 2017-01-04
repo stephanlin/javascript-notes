@@ -128,6 +128,58 @@ function foo() {
 var getLocalVariable = foo();
 getLocalVariable() // "private variable"
 ```
+Another example:
+```javascript
+function greet(whattosay) {
+    return function(name) {
+        console.log(whattosay + ' ' + name);
+    }
+}
+
+greet('Hi')('Tony');
+
+var sayHi = greet(Hi);
+sayHi('Tony');
+```
+One important example:
+```javascript 
+function buildFunctions () {
+    var arr = [];
+    for (var i = 0; i < 3; i++) {
+        arr.push(function() {
+            console.log(i);
+        });
+    }
+    return arr;
+}
+
+var fs = buildFunctions();
+fs[0](); // 3
+fs[1](); // 3
+fs[2](); // 3
+``` 
+
+```javascript
+function buildFunctions () {
+    var arr = [];
+    for (let i = 0; i < 3; i++) {
+        arr.push(
+            (function(j) {
+                return function() {
+                    console.log(j);
+                }
+            }(i)) // IIFE
+        )
+    }
+    return arr;
+}
+
+var fs = buildFunctions();
+fs[0](); // 0
+fs[1](); // 1
+fs[2](); // 2
+```
+
 One of the most popular types of closures is what is widely known as the module pattern; it allows you to emulate public, private, and privileged members:
 ```javascript
 var Module = (function() {
@@ -380,3 +432,66 @@ function func(firstname, lastname, language = 'en', ...other) {
 
 func('John', 'Lin', 'zh', '1', 2); // ['1', 2]
 ```
+
+## Automatic Semicolon Insertion
+The principle of the feature is to provide a little leniency when evaluating the syntax of a JavaScript program by conceptually inserting missing semicolons. For example:
+```javascript
+var foo = 1
+var bar = 2
+```
+These syntax errors are accommodated for, and the code will considered as:
+```javascript
+var foo = 1;
+var bar = 2;
+```
+The most common problem caused by missing out a semicolon is with the return keyword. Consider this following code snippet:
+```javascript
+var foo = function() {
+  var bar = 'baz'
+  return 
+  {
+    bar: bar
+  }
+}
+
+console.log(foo());
+```
+This code is syntactically incorrect and would be better treated as a syntax error. The grammar rule for the return statement is as follows:
+
+return [no LineTerminator here] Expression ;
+
+I.e. there should be no line terminator after the return keyword. But automatic semicolon insertion accommodates this error by transforming the return statement to this:
+```javascript
+return;
+  {
+    bar: bar
+  }
+```
+When this code executes the output to the console is undefined and not the object. [Read More](http://www.bradoncode.com/blog/2015/08/26/javascript-semi-colon-insertion/)
+
+## Immediately Invoked Function Expression (IIFE)
+```javascript
+// function statement
+function greet() {
+    console.log('Hello');
+}
+greet();
+
+// using a function expression
+var greetFunc = function () {
+    console.log('Hello');
+};
+greetFunc();
+
+// using an Immediately Invoked Function Expressiong (IIFE)
+var greeting = function () {
+    console.log('Hello');
+}();
+
+// inside IIFE
+// function expression, wrap with parenthesises
+(function() {
+    console.log('Hello');
+ }());
+```
+
