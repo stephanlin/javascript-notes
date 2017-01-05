@@ -495,3 +495,52 @@ var greeting = function () {
  }());
 ```
 
+## call, apply and bind
+*call* and *apply* invoke the function and let you set up for *this* keyword and pass the parameters if need. *bind* creates a copy of the function and let you set up what *this* keyword should mean and set default parameters.
+```javascript
+var person = {
+    firstname: 'john',
+    lastname : 'Doe',
+    getFullName: function () {
+        var fullname = this.firstname + ' ' + this.lastname;
+        return fullname;
+    }
+}
+
+var logName = function(arg1, arg2) {
+    console.log('Logged: ' + this.getFullName() + ' ' + arg1 + ' ' + arg2);
+}
+
+var logPersonName = logName.bind(person);
+
+logPersonName('111', '222');    // Logged: john Doe 111 222
+logName.call(person, '111', '222'); // Logged: john Doe 111 222
+logName.apply(person, ['111', '222']);  // Logged: john Doe 111 222
+```
+use for function borrowing (grab methods from object and use them):
+```javascript
+var person2 = {
+    firstname: 'Jane',
+    lastname: 'Doe'
+}
+
+console.log(person.getFullName.apply(person2)); // Jane Doe
+```
+use for function currying (creating a copy of a function but with some present parameters):
+```javascript
+function mutiply(a, b) {
+    return a*b;
+}
+
+var multiplyByTwo = mutiply.bind(this, 2);
+/* same as
+ function multiplyByTwo(b) {
+    var a = 2;
+    return a*b;
+}
+*/
+
+console.log(multiplyByTwo(3)); // 6
+console.log(mutiply.bind(this, 2, 2)()); // 4
+```
+
