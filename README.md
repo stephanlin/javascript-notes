@@ -544,3 +544,20 @@ console.log(multiplyByTwo(3)); // 6
 console.log(mutiply.bind(this, 2, 2)()); // 4
 ```
 
+## Prototype
+Every JavaScript object has a prototype. The prototype is also an object. All JavaScript objects inherit their properties and methods from their prototype. Consider the following example:
+```javascript
+function Person(firstname, lastname) {
+  this.firstname = firstname;
+  this.lastname = lastname;
+}
+
+Person.prototype.getFullName = function () {
+  return this.firstname + ' ' + this.lastname;
+}
+
+var john = new Person('John', 'Doe');
+var jane = new Person('Jane', 'Doe');
+```
+Functions (methods) are re-used, not re-created. If *getFullName* are added in the *Person* object, *john* and *jane* objects both would have a copy of *getFullName* when they are created. Instead, *john* and *jane* objects are created with *new Person()* inherit the *Person.prototype*.
+
