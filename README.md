@@ -1,7 +1,7 @@
 # *JavaScript - Understanding The Weird Parts*
 My JavaScript notes. Still editing...
 
-## Conceptual Aside
+## Some Definitions
 * **Syntax parser** <br/>
 A program that reads your code and determines what it does and if its grammar is valid.
 * **Lexical environment** <br/>
@@ -28,6 +28,8 @@ A type of data that represents a single value. There are 6 primitive types in Ja
 Both *undefined* and *null* represent lack of existence, but never set a varibale to *undefined*, set it to *null*, leave *undefined* to the engine.
 * **First class functions** <br/>
 Everything you can do with other types you can do with functions.
+* **Syntactic sugar** <br/>
+A different way to type something that doesn't change how it works under the hood.
 
 ## The global object
 All JavaScript runtimes have a unique object called the global object. Its properties include built-in objects like Math and String, as well as extra properties provided by the host environment. In browsers, the global object is the window object. In Node.js, it’s just called the “global object”. 
@@ -561,3 +563,33 @@ var jane = new Person('Jane', 'Doe');
 ```
 Functions (methods) are re-used, not re-created. If *getFullName* are added in the *Person* object, *john* and *jane* objects both would have a copy of *getFullName* when they are created. Instead, *john* and *jane* objects are created with *new Person()* inherit the *Person.prototype*.
 
+## ES6 Classes
+In JavaScript, a class is also an object. A class constructor must be invoked with *new*.
+```javascript
+class Person {
+  constructor(firstname, lastname) {
+    this.firstname = firstname;
+    this.lastname = lastname;
+  }
+  greet() {
+    return 'Hi ' + this.firstname + ' ' + this.lastname;
+  }
+}
+
+var john = new Person('John', 'Doe');
+console.log(john.greet());
+```
+*extends* sets the Prototype:
+```javascript
+class InformalPerson extends Person {
+  constructor(firstname, lastname) {
+    super(firstname, lastname);
+  }
+  greet() {
+    return 'Yo ' + this.firstname;
+  }
+}
+
+var jane = new InformalPerson('Jane', 'Doe');
+console.log(jane.greet());
+```
