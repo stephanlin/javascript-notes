@@ -30,6 +30,8 @@ Both *undefined* and *null* represent lack of existence, but never set a varibal
 Everything you can do with other types you can do with functions.
 * **Syntactic sugar** <br/>
 A different way to type something that doesn't change how it works under the hood.
+* **Transpile** <br/>
+Convert the syntax of one programming language to another.
 
 ## The global object
 All JavaScript runtimes have a unique object called the global object. Its properties include built-in objects like Math and String, as well as extra properties provided by the host environment. In browsers, the global object is the window object. In Node.js, it’s just called the “global object”. 
@@ -592,4 +594,93 @@ class InformalPerson extends Person {
 
 var jane = new InformalPerson('Jane', 'Doe');
 console.log(jane.greet());
+```
+
+## Own Library
+```javascript
+(function(global, $) {
+
+  var Greetr = function(firstName, lastName, language) {
+    return new Greetr.init(firstName, lastName, language);
+  }
+
+  var supportedLangs = ['en', 'es'];
+
+  var greetings = {
+    en: 'Hello',
+    es: 'Hola'
+  };
+
+  var formalGreetings = {
+    en: 'Greeings',
+    es: 'Saludos'
+  };
+
+  var logMessage = {
+    en: 'Logged in',
+    es: 'Inicio sesion'
+  };
+
+
+  Greetr.prototype = {
+    fullName: function () {
+      return this.firstName + ' ' + this.lastName;
+    },
+    validate: function () {
+      if (supportedLangs.indexOf(this.language) === -1) {
+        throw "Invalid language";
+      }
+    },
+    greeting: function () {
+      return greetings[this.language] + ' ' + this.firstName + '!';
+    },
+    formalGreeting: function () {
+      return formalGreetings[this.language] + ', ' + this.fullName();
+    },
+    greet: function(formal) {
+      var msg;
+      if (formal) {
+        msg = this.formalGreeting();
+      } else {
+        msg = this.greeting();
+      }
+      if (console) {
+        console.log(msg);
+      }
+
+      // 'this' refers to the calling object at execution time
+      // makes the method chinable
+      return this;
+    },
+    log: function() {
+      if (console) {
+        console.log(logMessage[this.language] + ': ' + this.fullName());
+      }
+      return this;
+    },
+    setLang: function(lang) {
+      this.language = lang;
+      this.validate();
+      return this;
+    }
+  };
+
+  Greetr.init = function(firstName, lastName, language) {
+    var self = this;
+    self.firstName = firstName || '';
+    self.lastName = lastName || '';
+    self.language = language || 'en';
+    self.validate();
+  }
+
+  Greetr.init.prototype = Greetr.prototype;
+
+  global.Greetr = global.G$ = Greetr;
+
+}(window, jQuery));
+```
+
+```javascript
+var g = G$('John', 'Doe');
+g.greet().setLang('es').greet(true);
 ```
