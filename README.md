@@ -1,4 +1,4 @@
-# *JavaScript Notes
+# *JavaScript Notes*
 My JavaScript notes.
 
 ## Some Definitions
