@@ -1,5 +1,5 @@
-# *JavaScript - Understanding The Weird Parts*
-My JavaScript notes. Still editing...
+# *JavaScript Notes
+My JavaScript notes.
 
 ## Some Definitions
 * **Syntax parser** <br/>
