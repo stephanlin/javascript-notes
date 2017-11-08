@@ -606,6 +606,24 @@ console.log('dummy' in person2); // true, person2 inherit dummy from its prototy
 console.log(person2.hasOwnProperty('dummy')); // false
 ```
 
+## Dynamic Prototype Pattern
+```javascript
+var peopleDynamicProto = function(name, age, state) {
+    this.age = age;
+    this.name = name;
+    this.state = state;
+    
+    if (typeof this.printPerson !== 'function') {
+        peopleDynamicProto.prototype.printPerson = function() {
+            console.log(this.name + " " + this.age + " " + this.state);
+        };
+    }
+}
+
+var person1 = new peopleDynamicProto();
+var person2 = new peopleDynamicProto();
+```
+
 ## Prototype
 Every JavaScript object has a prototype. The prototype is also an object. All JavaScript objects inherit their properties and methods from their prototype. Consider the following example:
 ```javascript
