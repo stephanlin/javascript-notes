@@ -586,7 +586,7 @@ var c = {
     name: 'c object',
     log: function() {
         console.log(this.name); // c object
-        self.name = 'Updated c object';
+        this.name = 'Updated c object';
         console.log(this.name); // Update c object
         var setname = (newname) => {
             this.name = newname;
