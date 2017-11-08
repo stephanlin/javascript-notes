@@ -777,3 +777,63 @@ console.log(jane.greet());
 var g = G$('John', 'Doe');
 g.greet().setLang('es').greet(true);
 ```
+
+## Promise
+```javascript
+let promiseToCleanTheRoom = new Promise(function(resolve, reject) {
+    // cleaning the room
+    
+    let isClean = true;
+    if (isClean) {
+        resolve('clean');
+    } else {
+        reject('not clean');
+    }
+});
+
+promiseToCleanTheRoom.then(function(fromResolve) {
+    console.log('The room is ' + fromResolve);
+}).catch(function(fromReject) {
+    console.log('The room is' + fromReject);
+})
+```
+
+```javascript
+// nested promise, when one is finish then do next
+
+let cleanRoom = function() {
+  return new Promise(function(resolve, reject) {
+    resolve('Cleaned The Room');
+  });
+};
+
+let removeGarbage = function(message) {
+  return new Promise(function(resolve, reject) {
+    resolve(message + ' Remove Garbage');
+  });
+};
+
+let winIcecream = function(message) {
+  return new Promise(function(resolve, reject) {
+    resolve( message + ' Won Icecream');
+  });
+};
+
+cleanRoom().then(function(result){
+	return removeGarbage(result);
+}).then(function(result){
+	return winIcecream(result);
+}).then(function(result){
+	console.log('finished ' + result);
+})
+
+// do all in parallel, don't want to wait for on to finish, when all is done then do something
+Promise.all([cleanRoom(), removeGarbage(), winIcecream()]).then(function() {
+	console.log('all finish');
+});
+// if just want any of them finishes
+Promise.race([cleanRoom(), removeGarbage(), winIcecream()]).then(function() {
+	console.log('one of them finishes');
+});
+
+```
