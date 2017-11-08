@@ -548,6 +548,64 @@ console.log(multiplyByTwo(3)); // 6
 console.log(mutiply.bind(this, 2, 2)()); // 4
 ```
 
+# Objection Creation
+## Factory Pattern
+```javascript
+var peopleFactory = function(name, age, state) {
+    var property = {};
+    
+    property.name = name;
+    property.age = age;
+    property.state = state;
+    property.printPerson = function() {
+        console.log(this.name + " " + this.age + " " + this.state);
+    };
+    return property;
+};
+
+var person1 = peopleFactory('Mike', 20, 'NY');
+person1.printPerson(); // Mike 20 NY
+``` 
+
+## Constructor Pattern
+```javascript
+var peopleConstructor = function(name, age, state) {
+    this.name = name;
+    this.age = age;
+    this.state = state;
+    this.printPerson = function() {
+        console.log(this.name + " " + this.age + " " + this.state);
+    };
+    return property;
+};
+
+// use new to create other object from peopleConstructor object
+var person1 = new peopleConstructor('Mike', 20, 'NY');
+person1.printPerson(); // Mike 20 NY
+```
+
+## Prototype Pattern
+```javascript
+var peopleProto = function() {};
+
+peopleProto.prototype.age = 0;
+peopleProto.prototype.name = 'no name';
+peopleProto.prototype.state = 'no city';
+peopleProto.prototype.dummy = 'dummy';
+peopleProto.prototype.printPerson = function() {
+    console.log(this.name + " " + this.age + " " + this.state);
+}
+
+var person2 = new peopleProto();
+person2.name = 'John';
+person2.age = 23;
+person2.state = 'NJ';
+
+person2.printPerson();
+console.log('dummy' in person2); // true, person2 inherit dummy from its prototype
+console.log(person2.hasOwnProperty('dummy')); // false
+```
+
 ## Prototype
 Every JavaScript object has a prototype. The prototype is also an object. All JavaScript objects inherit their properties and methods from their prototype. Consider the following example:
 ```javascript
