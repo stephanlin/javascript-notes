@@ -184,6 +184,23 @@ fs[1](); // 1
 fs[2](); // 2
 ```
 
+One more example... Again, closures are functions with preserved data. It keeps the value it needed to excute, it preserve the variable inside the function as a property, closure.
+
+```javascript
+var addTo = function(passed) {
+var addTo = function(passed) {
+    var add = function(inner) {
+        return passed + inner;
+    };
+    return add;
+};
+
+var addThree = new addTo(3);
+var addFour = new addTo(4);
+console.log(addThree(1));
+console.log(addFour(1));
+```
+
 One of the most popular types of closures is what is widely known as the module pattern; it allows you to emulate public, private, and privileged members:
 ```javascript
 var Module = (function() {
