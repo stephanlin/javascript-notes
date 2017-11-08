@@ -63,17 +63,6 @@ foo() // window
 new foo() // foo
 ```
 
-## var, let, const
-`var` has existed since the beginning, `let` was introduced in ES2015/ES6. `let` has block scope, variable defined by `let` keyword would die at the end of block. `var` has function scope. Also, `var` gets hoisted, `let` does not. A variable defined by `const` can't be changed. `const` must be initialized. `const c;` will get `Uncaught SyntaxError: Missing initializer in const declaration`. When an object is `const` its property can be changed. 
-```javascript
-const x = {};
-x.a = 1;
-
-const arr = [1,2];
-arr.push(3);
-arr = [1,2,3]; // assignment not allowed to const variable
-```
-
 ## Execution Context
 JavaScript is a single threaded language, meaning only one task (command) can be executed at a time. When the JavaScript interpreter initially executes code, it first enters into a global execution context by default. Each invocation of a function from this point on will result in the creation of a new execution context.
 
@@ -325,23 +314,15 @@ if (x) {
 console.log(x); // 1
 ```
 
-## "Let"
-The following two examples demostrate *let* which uses block-scoping:
+## var, let, const
+`var` has existed since the beginning, `let` was introduced in ES2015/ES6. `let` has block scope, variable defined by `let` keyword would die at the end of block. `var` has function scope. Also, `var` gets hoisted, `let` does not. A variable defined by `const` can't be changed. `const` must be initialized. `const c;` will get `Uncaught SyntaxError: Missing initializer in const declaration`. When an object is `const` its property can be changed. 
 ```javascript
-var a = 1;
-var b = 2;
-if (a < b) {
-    var c = true;
-};
-console.log(c); // true
-```
-```javascript
-var a = 1;
-var b = 2;
-if (a < b) {
-    let c = true;
-};
-console.log(c); // c is not defined
+const x = {};
+x.a = 1;
+
+const arr = [1,2];
+arr.push(3);
+arr = [1,2,3]; // assignment not allowed to const variable
 ```
 
 ## Event Queue
