@@ -557,6 +557,51 @@ console.log(multiplyByTwo(3)); // 6
 console.log(mutiply.bind(this, 2, 2)()); // 4
 ```
 
+## Arrow Function
+An arrow function is more concise and easier to read:
+```javascript
+var smartPhones = [
+    { name:'iphone', price:649 },
+    { name:'Galaxy S6', price:576 },
+    { name:'Galaxy Note 5', price:489 }
+];
+
+// es5
+console.log(smartPhones.map(
+    function(smartPhone) {
+    return smartPhone.price;
+    }
+)); // [649, 576, 489]
+
+// es6
+console.log(smartPhones.map(
+    smartPhone => smartPhone.price
+)); // [649, 576, 489]
+```
+The other benefit of using arrow functions with promises/callbacks is that it reduces the confusion surrounding the this keyword. In code with multiple nested functions, it can be difficult to keep track of and remember to bind the correct this context. In ES5, you can use workarounds like the `.bind` method or creating a closure using `var self = this;`.
+
+Because arrow functions allow you to retain the scope of the caller inside the function, you don’t need to create `self = this` closures or use bind. For the previous example earlier:
+```javascript
+var c = {
+    name: 'c object',
+    log: function() {
+        console.log(this.name); // c object
+        self.name = 'Updated c object';
+        console.log(this.name); // Update c object
+        var setname = (newname) => {
+            this.name = newname;
+        }
+        
+        setname('Updated c object again');
+        console.log(this.name); // Updated c object again
+    }
+}
+
+c.log();
+console.log(this.name); // undefined
+console.log(c.name); // Updated c object again
+```
+
 # Objection Creation
 ## Factory Pattern
 ```javascript
