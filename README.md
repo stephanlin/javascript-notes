@@ -463,6 +463,16 @@ func('John', 'Lin', 'zh', '1', 2); // ['1', 2]
 // you can pass an array too
 func('John', 'Lin', 'zh', [1,2,3]);
 ```
+Spread operator can be used in array too
+```javascript
+var arr1 = [4,5,6];
+var arr2 = [0,1,2,3, ...arr1, 7,8];
+
+var a = [1,2,3];
+var b = [4,5,6];
+a.push(...b); // old school: Array.prototype.push.apply(a,b);
+console.log(a); // 1,2,3,4,5,6
+```
 
 ## Automatic Semicolon Insertion
 The principle of the feature is to provide a little leniency when evaluating the syntax of a JavaScript program by conceptually inserting missing semicolons. For example:
