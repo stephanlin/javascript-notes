@@ -274,6 +274,21 @@ console.log(x+y); // NaN
 var y = 7; // initialized y
 ```
 
+## Function declaration vs expression
+Function declarations are hoisted, functions expressions are not. A function declaration can't be passed as an function argument. 
+```javascript
+console.log(funcA()); // funcA is function declaration
+console.log(funcB()); // Uncaught TypeError: funcB is not a function
+
+function funcA() {
+  return 'funcA is function declaration';
+}
+
+var funcB = function() {
+  return 'funcB is function expression';
+}
+```
+
 ## Scoping and Hoisting
 Scoping is quite confusing in JavaScript. Consider the following C program:
 ```c
