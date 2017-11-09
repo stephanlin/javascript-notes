@@ -454,11 +454,14 @@ func('John', 'Lin', 'zh'); // ['John', 'Lin', 'zh']
 
 ## Spread
 ```javascript
-function func(firstname, lastname, language = 'en', ...other) {
+function func(firstname, lastname, language = 'en', ...other) { // ...other is called rest parameters
     console.log(other)
 }
 
 func('John', 'Lin', 'zh', '1', 2); // ['1', 2]
+
+// you can pass an array too
+func('John', 'Lin', 'zh', [1,2,3]);
 ```
 
 ## Automatic Semicolon Insertion
