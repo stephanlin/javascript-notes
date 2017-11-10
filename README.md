@@ -359,6 +359,66 @@ wait();
 console.log('finish execution');
 ```
 
+## Event Bubbling and Capturing
+Bubbling means going from bottom to top. When you have event on an element, the execution of the event goes from the lowest element to the top in the body. For example, if a button has a click event and you click this button, you are not only clicking this button but also clicking its parent element, and their parent... So if the parent of that button also has click event, then it will be triggered as well.
+
+```html
+<div id="main">
+  <div id="parent">
+    <div id="child1">child1</div>
+    <div id="child2">child2</div>
+  </div>
+</div>
+```
+```javascript
+$('#parent').click(function() {
+  console.log('parent clicked');
+});
+$('#child1').click(function() {
+  console.log('child1 clicked');
+});
+```
+When child1 is clicked, we have
+```
+child1 clicked
+parent clicked
+```
+When child2 is clicked, we have
+```
+parent clicked
+```
+because, child2 does not have a click event function.
+
+Event Capturing happens from top to bottom. When you click an element, the click event on this element is captured, then it's children element, and their children...
+
+```javascript
+// following does the same as what we did above in jQuery
+// default is bubbling face
+var p = document.querySelector('#parent');
+p.addEventListener('click', function() {
+  console.log('parent clicked');
+});
+
+var c = document.querySelector('#child1');
+c.addEventListener('click', function() {
+  console.log('child1 clicked');
+});
+```
+
+```javascript
+// we can set it to capturing face
+var p = document.querySelector('#parent');
+p.addEventListener('click', function() {
+  console.log('parent clicked');
+}, true);
+
+var c = document.querySelector('#child1');
+c.addEventListener('click', function() {
+  console.log('child1 clicked');
+}, true);
+```
+Now if we click on child1, parent's click event will trigger before child1's.
+
 ## Functions Are Objects
 In JavaScript, functions are first-class objects, because they can have properties and methods just like any other object. What distinguishes them from other objects is that functions can be called. In brief, they are *Function* objects. We can attach properties and methods to a function since it's a object. A function object has some hidden special properties. Two important ones are: name (optional, can be anonymous) and code ("invocable" ()). 
 
@@ -630,8 +690,57 @@ console.log(this.name); // undefined
 console.log(c.name); // Updated c object again
 ```
 
-# Objection Creation
-## Factory Pattern
+## Iterator and Generator
+
+```javascript
+// iterator
+var arr = [1,2,3];
+console.dir(arr); // there is __proto__[Symbol.iterator], means this object is iterable
+
+for (let a of arr) {
+    console.log(a);
+}
+
+let itr = arr[Symbol.iterator]();
+console.log(itr.next()); // {value: 1, done: false}
+console.log(itr.next()); // {value: 2, done: false}
+console.log(itr.next()); // {value: 3, done: false}
+console.log(itr.next()); // {value: undefined, done: true}
+
+// generator
+function* gen() {
+  var i = 0;
+  while (i++ < 5) {
+    yield i;
+  }
+}
+
+let itr = gen();
+console.log(itr.next());
+
+// infinite
+function* gen() {
+  var i = 0;
+  while (true) {
+    yield i++;
+  }
+}
+
+//
+function* gen() {
+  yield 1;
+  yield 2;
+  return 'hello';
+  yield 3;
+}
+console.log(itr.next()); // {value: 1, done: false}
+console.log(itr.next()); // {value: 2, done: false}
+console.log(itr.next()); // {value: "hello", done: true}
+console.log(itr.next()); // {value: undefined, done: true}
+```
+
+## Objection Creation
+#### Factory Pattern
 ```javascript
 var peopleFactory = function(name, age, state) {
     var property = {};
@@ -649,7 +758,7 @@ var person1 = peopleFactory('Mike', 20, 'NY');
 person1.printPerson(); // Mike 20 NY
 ``` 
 
-## Constructor Pattern
+#### Constructor Pattern
 ```javascript
 var peopleConstructor = function(name, age, state) {
     this.name = name;
@@ -666,7 +775,7 @@ var person1 = new peopleConstructor('Mike', 20, 'NY');
 person1.printPerson(); // Mike 20 NY
 ```
 
-## Prototype Pattern
+#### Prototype Pattern
 ```javascript
 var peopleProto = function() {};
 
@@ -688,7 +797,7 @@ console.log('dummy' in person2); // true, person2 inherit dummy from its prototy
 console.log(person2.hasOwnProperty('dummy')); // false
 ```
 
-## Dynamic Prototype Pattern
+#### Dynamic Prototype Pattern
 ```javascript
 var peopleDynamicProto = function(name, age, state) {
     this.age = age;
