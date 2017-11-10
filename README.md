@@ -389,7 +389,7 @@ parent clicked
 ```
 because, child2 does not have a click event function.
 
-Event Capturing happens from top to bottom. When you click an element, the click event on this element is captured, then it's children element, and their children...
+Event Capturing happens from top to bottom. When you click an element, the click event on all parents of this element is captured first, then itself, lastly it's children element, and their children...
 
 ```javascript
 // following does the same as what we did above in jQuery
@@ -417,7 +417,7 @@ c.addEventListener('click', function() {
   console.log('child1 clicked');
 }, true);
 ```
-Now if we click on child1, parent's click event will trigger before child1's.
+Now if we click on child1, parent's click event will trigger before child1's. If child1 has children, its children's click event will trigger after it.
 
 ## Functions Are Objects
 In JavaScript, functions are first-class objects, because they can have properties and methods just like any other object. What distinguishes them from other objects is that functions can be called. In brief, they are *Function* objects. We can attach properties and methods to a function since it's a object. A function object has some hidden special properties. Two important ones are: name (optional, can be anonymous) and code ("invocable" ()). 
