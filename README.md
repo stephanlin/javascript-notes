@@ -188,7 +188,6 @@ One more example... Again, closures are functions with preserved data. It keeps 
 
 ```javascript
 var addTo = function(passed) {
-var addTo = function(passed) {
     var add = function(inner) {
         return passed + inner;
     };
