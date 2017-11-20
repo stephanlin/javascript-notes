@@ -1011,3 +1011,106 @@ Promise.race([cleanRoom(), removeGarbage(), winIcecream()]).then(function() {
 });
 
 ```
+
+## JavaScript Decorators
+Decorating: Look more attractive by adding extra items. *Note:* Currently, if you want to use decorator, you need to use Babel ([Transpiler](https://stackoverflow.com/questions/43968748/is-babel-a-compiler-or-transpiler)).
+
+```javascript
+let lipstick = function(target) {
+  target.lips = 'pink';
+}
+
+let earrings = function(value) {
+  return function(target) {
+  	target.hasEarring = value;
+  };
+};
+
+@lipstick
+@earrings(true)
+class Girl{
+}
+
+console.log(Girl.lips); // pink
+console.log(Girl.hasEarring); // true
+```
+
+A class's method can be changed (overriden)
+```javascript
+class Car {
+	constructor(color) {
+  	Object.assign(this, {color}); // this.color = color;
+  }
+  getColor() {
+  	return this.color;
+  }
+}
+
+const redCar = new Car('red');
+console.log(redCar.getColor()); // red
+
+redCar.getColor = function() {
+	return 'blah blah';
+};
+console.log(redCar.getColor()); // blah blah
+```
+
+To set a method of a class read-only (can't be overridden), without decorator
+```javascript
+class Car {
+	constructor(color) {
+  	Object.assign(this, {color}); // this.color = color;
+  }
+}
+
+let descriptor = {
+	value: function() {
+  	return this.color;
+  },
+  writable: true,
+  configurable: true,
+  enumerable: true
+}
+
+let readonly = function(target, key, descriptor) {
+	descriptor.writable = false;
+  return descriptor;
+}
+
+descriptor = readonly(Car.prototype, 'getColor', descriptor);
+Object.defineProperty(Car.prototype, 'getColor', descriptor);
+
+const redCar = new Car('red');
+console.log(redCar.getColor()); // red
+
+redCar.getColor = function() {
+	return 'blah blah';
+};
+console.log(redCar.getColor()); // red
+```
+
+use decorator
+```javascript
+let readonly = function(target, key, descriptor) {
+	descriptor.writable = false;
+  return descriptor;
+}
+
+class Car {
+	constructor(color) {
+  	Object.assign(this, {color}); // this.color = color;
+  }
+  @readonly
+  getColor() {
+  	return this.color;
+  }
+}
+
+const redCar = new Car('red');
+console.log(redCar.getColor()); // red
+
+redCar.getColor = function() {
+	return 'blah blah';
+};
+console.log(redCar.getColor()); // red
+```
