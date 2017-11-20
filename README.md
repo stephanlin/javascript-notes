@@ -798,6 +798,8 @@ console.log(person2.hasOwnProperty('dummy')); // false
 ```
 
 #### Dynamic Prototype Pattern
+The dynamic prototype pattern seeks to solve this problem by encapsulating all of the information within the constructor while maintaining the benefits of using both a constructor and a prototype by initializing the prototype inside the constructor, but only if it is needed. You can determine if the prototype needs to be initialized by checking for the existence of a method that should be available.
+
 ```javascript
 var peopleDynamicProto = function(name, age, state) {
     this.age = age;
